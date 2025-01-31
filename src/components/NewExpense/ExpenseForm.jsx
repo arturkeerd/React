@@ -34,7 +34,7 @@ import './ExpenseForm.css'
                 <div className='new-expense__control'>
                     <label>Date</label>
                     <input type='date' min='2024-11-12' max='2026-01-31'
-                    onChange={priceChangeHandler}/>
+                    onChange={dateChangeHandler}/>
                 </div>
             </div>
             <div className='new-expense__actions'>
