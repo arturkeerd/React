@@ -15,15 +15,28 @@ import './ExpenseForm.css'
     const dateChangeHandler = (event) => {
         setEnteredDate(event.target.value)
     }
-    
+    const submitHandler = (event) => {
+        event.preventDefault()
+        const expenceData = {
+            title: enteredTitle,
+            price: enteredPrice,
+            date: new Date(enteredDate),
+        }
+    props.onSaveExpenseData(expenceData)
+    setEnteredTitle('')
+    setEnteredTitle('')
+    setEnteredDate('')
+    }
+
      return (
-        <form>
+        <form onSubmit={submitHandler}>
             <div className='new-expense__controls'>
                 <div className='new-expense__control'>
                     <label>Title</label>
                     <input 
                     type='text'
                     onChange={titleChangeHandler}
+                    value={enteredTitle}
                     />
                 </div>
                 <div className='new-expense__control'>
