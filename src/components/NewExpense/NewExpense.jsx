@@ -1,19 +1,36 @@
-import ExpenseForm from "./ExpenseForm"
-import './NewExpense.css'
+import { useState } from "react";
+import ExpenseForm from "./ExpenseForm";
+import "./NewExpense.css";
 
 const NewExpense = (props) => {
-    const saveExpenseDataHandler = (enteredExpenseData) => {
-        const expenseData = {
-            ...enteredExpenseData,
-            id: Math.random().toString()
-        }
-        console.log(expenseData)
-    }
-    return(
-        <div className="new-expense">
-            <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}/>
-        </div>
-    )
-}
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
-export default NewExpense
+  const saveExpenseDataHandler = (enteredExpenseData) => {
+    const expenseData = {
+      ...enteredExpenseData,
+      id: Math.random().toString(),
+    };
+    console.log(expenseData);
+    setIsFormVisible(false); // Hide form after submission
+  };
+
+  return (
+    <div className="new-expense">
+      {!isFormVisible ? (
+        <button
+          onClick={() => setIsFormVisible(true)}
+          className="new-expense__button"
+        >
+          Add New Expense
+        </button>
+      ) : (
+        <ExpenseForm
+          onSaveExpenseData={saveExpenseDataHandler}
+          onCancel={() => setIsFormVisible(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default NewExpense;
