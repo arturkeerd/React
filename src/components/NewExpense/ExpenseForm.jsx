@@ -1,41 +1,42 @@
-import { useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import "./ExpenseForm.css";
+import Error from '../UI/Error'
 
 const ExpenseForm = (props) => {
-  const [enteredTitle, setEnteredTitle] = useState("");
-  const [enteredPrice, setEnteredPrice] = useState("");
-  const [enteredDate, setEnteredDate] = useState("");
-
-  const titleChangeHandler = (event) => {
-    setEnteredTitle(event.target.value);
-  };
-
-  const priceChangeHandler = (event) => {
-    setEnteredPrice(event.target.value);
-  };
-
-  const dateChangeHandler = (event) => {
-    setEnteredDate(event.target.value);
-  };
+  const [error,setError] = useState(null)
+  console.log(error)
+  const titleInputRef = useRef();
+  const amountInputRef = useRef();
+  const dateInputRef = useRef();
 
   const submitHandler = (event) => {
     event.preventDefault();
+    
+    if (enteredTitle.trim().length == 0 || enteredAmount.trim().length == 0 || enteredDate.trim().length == 0) {
+        setError({
+          title: 'Invalid input',
+          message: 'Please enter a valid title or amount or date (non-empty values)'
+        });
+        return
+      }
+
+      
+    const enteredTitle = titleInputRef.current.value;
+    const enteredPrice = amountInputRef.current.value;
+    const enteredDate = dateInputRef.current.value;
+
     const expenseData = {
       title: enteredTitle,
       price: enteredPrice,
       date: new Date(enteredDate),
     };
-    props.onSaveExpenseData(expenseData);
-    setEnteredTitle("");
-    setEnteredPrice(""); // Fix: properly reset price field
-    setEnteredDate("");
-  };
 
-  const cancelHandler = () => {
-    setEnteredTitle("");  // Reset title
-    setEnteredPrice("");  // Reset price
-    setEnteredDate("");   // Reset date
-    props.onCancel();     // Close form
+    props.onSaveExpenseData(expenseData);
+    props.onCancel(); 
+    // Clear input fields (optional, but works)
+    titleInputRef.current.value = "";
+    amountInputRef.current.value = "";
+    dateInputRef.current.value = "";
   };
 
   return (
@@ -43,35 +44,19 @@ const ExpenseForm = (props) => {
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input 
-            type="text" 
-            onChange={titleChangeHandler} 
-            value={enteredTitle} 
-          />
+          <input type="text" id="title" ref={titleInputRef} />
         </div>
         <div className="new-expense__control">
           <label>Price</label>
-          <input 
-            type="number" 
-            min="0.01" 
-            step="0.01" 
-            onChange={priceChangeHandler} 
-            value={enteredPrice} 
-          />
+          <input type="number" min="0.01" step="0.01" id="amount" ref={amountInputRef} />
         </div>
         <div className="new-expense__control">
           <label>Date</label>
-          <input 
-            type="date" 
-            min="2024-11-12" 
-            max="2026-01-31" 
-            onChange={dateChangeHandler} 
-            value={enteredDate} 
-          />
+          <input type="date" min="2024-11-12" max="2026-01-31" id="date" ref={dateInputRef} />
         </div>
       </div>
       <div className="new-expense__actions">
-        <button type="button" onClick={cancelHandler}>Cancel</button>
+        <button type="button" onClick={props.onCancel}>Cancel</button> {/* ✅ Fixed */}
         <button type="submit">Add Expense</button>
       </div>
     </form>
@@ -79,3 +64,74 @@ const ExpenseForm = (props) => {
 };
 
 export default ExpenseForm;
+
+{/*
+import { Fragment, useRef, useState } from "react";
+import "./ExpenseForm.css";
+import Error from '../UI/Error'
+
+const ExpenseForm = (props) => {
+  const [error,setError] = useState(null)
+  console.log(error)
+  const titleInputRef = useRef();
+  const amountInputRef = useRef();
+  const dateInputRef = useRef();
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    
+    if (enteredTitle.trim().length == 0 || enteredAmount.trim().length == 0 || enteredDate.trim().length == 0) {
+        setError({
+          title: 'Invalid input',
+          message: 'Please enter a valid title or amount or date (non-empty values)'
+        });
+        return
+      }
+
+      
+    const enteredTitle = titleInputRef.current.value;
+    const enteredPrice = amountInputRef.current.value;
+    const enteredDate = dateInputRef.current.value;
+
+    const expenseData = {
+      title: enteredTitle,
+      price: enteredPrice,
+      date: new Date(enteredDate),
+    };
+
+    props.onSaveExpenseData(expenseData);
+    props.onCancel(); 
+    // Clear input fields (optional, but works)
+    titleInputRef.current.value = "";
+    amountInputRef.current.value = "";
+    dateInputRef.current.value = "";
+  };
+
+  return (
+    <>
+    {
+      error &&
+      <Error />
+    }
+    {
+      <form onSubmit={submitHandler}>
+      <div className="new-expense__controls">
+        <div className="new-expense__control">
+        </div>
+        <div className="new-expense__control">
+        </div>
+        <div className="new-expense__control">
+        </div>
+      </div>
+      <div className="new-expense__actions">
+        <button type="button" onClick={props.onCancel}>Cancel</button> 
+        <button type="submit">Add Expense</button>
+      </div>
+    </form>
+  }
+  </>
+  );
+};
+
+export default ExpenseForm;
+*/}
