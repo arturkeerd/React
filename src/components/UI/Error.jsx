@@ -1,9 +1,7 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
-
 import Card from "./Card";
 import Button from "./Button";
-
 import "./Error.css";
 
 const BackDrop = () => {
@@ -30,7 +28,7 @@ const ModalOverlay = (props) => {
 
 const Error = (props) => {
     return (
-      <Fragment>
+      <>
         {ReactDOM.createPortal(
           <BackDrop onConfirm={props.onConfirm} />,
           document.getElementById('backdrop-root')
@@ -43,7 +41,7 @@ const Error = (props) => {
           />,
           document.getElementById('overlay-root')
         )}
-      </Fragment>
+      </>
     );
   };
   

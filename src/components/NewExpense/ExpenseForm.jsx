@@ -12,6 +12,10 @@ const ExpenseForm = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     
+    const enteredPrice = amountInputRef.current.value;
+    const enteredDate = dateInputRef.current.value;
+    const enteredTitle = titleInputRef.current.value;
+
     if (enteredTitle.trim().length == 0 || enteredAmount.trim().length == 0 || enteredDate.trim().length == 0) {
         setError({
           title: 'Invalid input',
@@ -19,11 +23,6 @@ const ExpenseForm = (props) => {
         });
         return
       }
-
-      
-    const enteredTitle = titleInputRef.current.value;
-    const enteredPrice = amountInputRef.current.value;
-    const enteredDate = dateInputRef.current.value;
 
     const expenseData = {
       title: enteredTitle,
@@ -40,6 +39,15 @@ const ExpenseForm = (props) => {
   };
 
   return (
+    <>
+      {
+      error &&
+      <Error 
+        title={error.title}
+        message={error.message}
+        onConfirm={() => setError(null)}
+      />
+    }
     <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
@@ -56,16 +64,17 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
-        <button type="button" onClick={props.onCancel}>Cancel</button> {/* ✅ Fixed */}
+        <button type="button" onClick={props.onCancel}>Cancel</button> 
         <button type="submit">Add Expense</button>
       </div>
     </form>
+    </>
   );
 };
 
 export default ExpenseForm;
 
-{/*
+{/* kui ma kustutan fragmendi sees olevad asjad, siis ta läheb katki
 import { Fragment, useRef, useState } from "react";
 import "./ExpenseForm.css";
 import Error from '../UI/Error'
