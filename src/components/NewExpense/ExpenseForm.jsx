@@ -16,7 +16,7 @@ const ExpenseForm = (props) => {
     const enteredDate = dateInputRef.current.value;
     const enteredTitle = titleInputRef.current.value;
 
-    if (enteredTitle.trim().length == 0 || enteredAmount.trim().length == 0 || enteredDate.trim().length == 0) {
+    if (enteredTitle.trim().length == 0 || enteredPrice.trim().length == 0 || enteredDate.trim().length == 0) {
         setError({
           title: 'Invalid input',
           message: 'Please enter a valid title or amount or date (non-empty values)'
